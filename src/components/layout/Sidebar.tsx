@@ -7,6 +7,7 @@ import Image from "next/image";
 import { 
   LayoutDashboard, 
   CreditCard, 
+  BookDown,
   Users, 
   Truck, 
   Settings, 
@@ -53,6 +54,12 @@ const navigation: NavItem[] = [
     name: 'Herramientas',
     href: '/herramientas',
     icon: Settings,
+    enabled: false,
+  },
+  {
+    name: 'Salidas',
+    href: '/salidas',
+    icon: BookDown,
     enabled: false,
   },
 ];

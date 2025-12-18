@@ -61,6 +61,14 @@ export interface FormularioTarjeta {
   importeTotal: number;
   comprobante: string;
   documento: File | null;
-  // Para extraer saldo
   tarjetaSeleccionadaId?: number;
+}
+
+export interface TipoTarjetaCompleto {
+  Id: number;
+  Nombre: string;
+  Description: string;
+  PrecioKG: number;
+  Status: number;
+  CreateDate: string;
 }

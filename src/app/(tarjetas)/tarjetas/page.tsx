@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useTheme } from '@/src/contexts/ThemeContext';
 import { useToastHelpers } from '@/src/components/ui/toast';
 import {
@@ -15,13 +16,13 @@ import { TipoMovimiento } from './components/TipoMovimiento';
 import { Documentos } from './components/Documentos';
 import { HistorialMovimientos } from './components/HistorialMovimientos';
 import { ProgressSteps } from './components/ProgressSteps';
+import { TarjetasTabs } from './components/TarjetasTabs';
 
 export default function TarjetasPage() {
   const { theme } = useTheme();
   const toast = useToastHelpers();
+  const router = useRouter();
 
-  const [activeTab, setActiveTab] = useState<'registrar' | 'tipos' | 'emitidas'>('registrar');
-  
   //* Estados del formulario
   const [tiposTarjetas, setTiposTarjetas] = useState<TipoTarjeta[]>([]);
   
@@ -286,147 +287,77 @@ export default function TarjetasPage() {
         </div>
       </div>
 
-      {/* Tabs */}
-      <div className={`${currentStyles.card} rounded-2xl p-2`}>
-        <div className="flex gap-1 overflow-x-auto">
-          <button
-            onClick={() => setActiveTab('registrar')}
-            className={`${
-              activeTab === 'registrar' ? currentStyles.tabActive : currentStyles.tab
-            } flex items-center gap-2 px-6 py-4 text-sm font-semibold transition-all whitespace-nowrap rounded-xl flex-1 sm:flex-initial`}
-          >
-            <CreditCard className="w-5 h-5" />
-            <span>Registrar Tarjetas</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('tipos')}
-            className={`${
-              activeTab === 'tipos' ? currentStyles.tabActive : currentStyles.tab
-            } flex items-center gap-2 px-6 py-4 text-sm font-semibold transition-all whitespace-nowrap rounded-xl flex-1 sm:flex-initial`}
-          >
-            <FileText className="w-5 h-5" />
-            <span>Tipos de Tarjetas</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('emitidas')}
-            className={`${
-              activeTab === 'emitidas' ? currentStyles.tabActive : currentStyles.tab
-            } flex items-center gap-2 px-6 py-4 text-sm font-semibold transition-all whitespace-nowrap rounded-xl flex-1 sm:flex-initial`}
-          >
-            <Building2 className="w-5 h-5" />
-            <span>Tarjetas Emitidas</span>
-          </button>
-        </div>
-      </div>
+      {/* Tabs Component */}
+      <TarjetasTabs 
+        currentStyles={currentStyles} 
+        activeTab="registrar" 
+      />
 
-      {/* Contenido */}
-      {activeTab === 'registrar' && (
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-          {/* Formulario - 8 columnas */}
-          <div className="xl:col-span-8 space-y-6">
-            {/* Progress Steps */}
-            <ProgressSteps currentStyles={currentStyles} currentStep={currentStep} />
+      {/* Contenido del Formulario de Registrar */}
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+        {/* Formulario - 8 columnas */}
+        <div className="xl:col-span-8 space-y-6">
+          {/* Progress Steps */}
+          <ProgressSteps currentStyles={currentStyles} currentStep={currentStep} />
 
-            {/* Paso 1: Información */}
-            {currentStep >= 1 && (
-              <InformacionTarjeta
-                theme={theme}
-                currentStyles={currentStyles}
-                formData={formData}
-                setFormData={setFormData}
-                tiposTarjetas={tiposTarjetas}
-                handleTipoTarjetaChange={handleTipoTarjetaChange}
-                currentStep={currentStep}
-                setCurrentStep={setCurrentStep}
-              />
-            )}
-
-            {/* Paso 2: Tipo de Movimiento */}
-            {currentStep >= 2 && (
-              <TipoMovimiento
-                theme={theme}
-                currentStyles={currentStyles}
-                formData={formData}
-                setFormData={setFormData}
-                currentStep={currentStep}
-                setCurrentStep={setCurrentStep}
-              />
-            )}
-
-            {/* Paso 3: Documentos */}
-            {currentStep >= 3 && (
-              <Documentos
-                theme={theme}
-                currentStyles={currentStyles}
-                formData={formData}
-                setFormData={setFormData}
-                currentStep={currentStep}
-                setCurrentStep={setCurrentStep}
-                isLoading={isLoading}
-                onSubmit={handleSubmit}
-                onFileChange={handleFileChange}
-                removeFile={removeFile}
-              />
-            )}
-          </div>
-
-          {/* Historial - 4 columnas */}
-          <div className="xl:col-span-4">
-            <HistorialMovimientos
+          {/* Paso 1: Información */}
+          {currentStep >= 1 && (
+            <InformacionTarjeta
               theme={theme}
               currentStyles={currentStyles}
-              clienteId={formData.clienteId}
-              historial={historial}
-              filtroFechaDesde={filtroFechaDesde}
-              filtroFechaHasta={filtroFechaHasta}
-              setFiltroFechaDesde={setFiltroFechaDesde}
-              setFiltroFechaHasta={setFiltroFechaHasta}
-              limpiarFiltros={limpiarFiltros}
+              formData={formData}
+              setFormData={setFormData}
+              tiposTarjetas={tiposTarjetas}
+              handleTipoTarjetaChange={handleTipoTarjetaChange}
+              currentStep={currentStep}
+              setCurrentStep={setCurrentStep}
             />
-          </div>
-        </div>
-      )}
+          )}
 
-      {/* Tabs Tipos y Emitidas */}
-      {activeTab === 'tipos' && (
-        <div className={`${currentStyles.card} rounded-2xl p-12 text-center`}>
-          <div className="max-w-md mx-auto">
-            <div className="inline-block p-8 bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-950 dark:to-blue-900 rounded-3xl mb-6">
-              <FileText className="w-20 h-20 text-blue-600 dark:text-blue-400" />
-            </div>
-            <h3 className={`${currentStyles.header} text-2xl font-bold mb-3`}>
-              Tipos de Tarjetas
-            </h3>
-            <p className={`${currentStyles.subtitle} text-base mb-6`}>
-              Esta sección estará disponible próximamente
-            </p>
-            <div className={`${currentStyles.badge} inline-flex items-center gap-2 px-4 py-2 rounded-full`}>
-              <AlertCircle className="w-4 h-4" />
-              <span className="text-sm font-semibold">En desarrollo</span>
-            </div>
-          </div>
-        </div>
-      )}
+          {/* Paso 2: Tipo de Movimiento */}
+          {currentStep >= 2 && (
+            <TipoMovimiento
+              theme={theme}
+              currentStyles={currentStyles}
+              formData={formData}
+              setFormData={setFormData}
+              currentStep={currentStep}
+              setCurrentStep={setCurrentStep}
+            />
+          )}
 
-      {activeTab === 'emitidas' && (
-        <div className={`${currentStyles.card} rounded-2xl p-12 text-center`}>
-          <div className="max-w-md mx-auto">
-            <div className="inline-block p-8 bg-gradient-to-br from-purple-100 to-purple-50 dark:from-purple-950 dark:to-purple-900 rounded-3xl mb-6">
-              <Building2 className="w-20 h-20 text-purple-600 dark:text-purple-400" />
-            </div>
-            <h3 className={`${currentStyles.header} text-2xl font-bold mb-3`}>
-              Tarjetas Emitidas
-            </h3>
-            <p className={`${currentStyles.subtitle} text-base mb-6`}>
-              Esta sección estará disponible próximamente
-            </p>
-            <div className={`${currentStyles.badge} inline-flex items-center gap-2 px-4 py-2 rounded-full`}>
-              <AlertCircle className="w-4 h-4" />
-              <span className="text-sm font-semibold">En desarrollo</span>
-            </div>
-          </div>
+          {/* Paso 3: Documentos */}
+          {currentStep >= 3 && (
+            <Documentos
+              theme={theme}
+              currentStyles={currentStyles}
+              formData={formData}
+              setFormData={setFormData}
+              currentStep={currentStep}
+              setCurrentStep={setCurrentStep}
+              isLoading={isLoading}
+              onSubmit={handleSubmit}
+              onFileChange={handleFileChange}
+              removeFile={removeFile}
+            />
+          )}
         </div>
-      )}
+
+        {/* Historial - 4 columnas */}
+        <div className="xl:col-span-4">
+          <HistorialMovimientos
+            theme={theme}
+            currentStyles={currentStyles}
+            clienteId={formData.clienteId}
+            historial={historial}
+            filtroFechaDesde={filtroFechaDesde}
+            filtroFechaHasta={filtroFechaHasta}
+            setFiltroFechaDesde={setFiltroFechaDesde}
+            setFiltroFechaHasta={setFiltroFechaHasta}
+            limpiarFiltros={limpiarFiltros}
+          />
+        </div>
+      </div>
     </div>
   );
 }
