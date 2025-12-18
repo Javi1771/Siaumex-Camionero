@@ -45,7 +45,7 @@ export async function GET(request: Request) {
 
     const result = await sqlRequest.query(query);
 
-    // Calcular totales
+    //* Calcular totales
     const movimientos = result.recordset;
     const ultimoMovimiento = movimientos[0];
     const totalMovimientos = movimientos.length;

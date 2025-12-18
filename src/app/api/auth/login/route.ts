@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
 
     const user = result.recordset[0];
 
-    // Verificar lockout
+    //* Verificar lockout
     if (user.LockoutEnd && new Date(user.LockoutEnd) > new Date()) {
       return NextResponse.json(
         {
@@ -55,9 +55,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Comparar contraseña directamente
+    //* Comparar contraseña directamente
     if (user.PlainPassword !== password) {
-      // Incrementar intentos fallidos
+      //! Incrementar intentos fallidos
       const newFailedCount = user.AccessFailedCount + 1;
       await pool
         .request()
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Reset intentos fallidos en login exitoso
+    //! Reset intentos fallidos en login exitoso
     await pool
       .request()
       .input('userId', user.Id)
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
         WHERE Id = @userId
       `);
 
-    // Generar token JWT
+    //* Generar token JWT
     const token = await generateToken({
       userId: user.Id,
       username: user.UserName,
@@ -102,20 +102,20 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Establecer cookies
+    //* Establecer cookies
     response.cookies.set('auth-token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 días
+      maxAge: 60 * 60 * 24 * 7, //* 7 días
     });
 
-    // NUEVA COOKIE: Guardar userId
+    //* NUEVA COOKIE: Guardar userId
     response.cookies.set('user-id', user.Id, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 días
+      maxAge: 60 * 60 * 24 * 7, //* 7 días
     });
 
     return response;

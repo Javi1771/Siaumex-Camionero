@@ -15,7 +15,7 @@ export async function GET(request: Request) {
 
     const pool = await getConnection();
 
-    // Obtener todas las tarjetas del cliente con su último movimiento
+    //? Obtener todas las tarjetas del cliente con su último movimiento
     const result = await pool
       .request()
       .input('clienteId', clienteId)

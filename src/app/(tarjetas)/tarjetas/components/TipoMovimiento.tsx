@@ -34,9 +34,9 @@ export function TipoMovimiento({
   const [tarjetasDisponibles, setTarjetasDisponibles] = useState<TarjetaDisponible[]>([]);
   const [isLoadingTarjetas, setIsLoadingTarjetas] = useState(false);
 
-  // Estilos invertidos para modo claro
+  //? Estilos invertidos para modo claro
   const invertedStyles = {
-    // Colores de fondo invertidos
+    //* Colores de fondo invertidos
     card: theme === 'dark' 
       ? 'bg-neutral-900/50 border border-neutral-800' 
       : 'bg-white border border-neutral-200 shadow-sm',
@@ -45,7 +45,7 @@ export function TipoMovimiento({
       ? 'hover:border-neutral-700' 
       : 'hover:border-neutral-300 hover:shadow-md',
     
-    // Textos invertidos
+    //* Textos invertidos
     header: theme === 'dark' 
       ? 'text-neutral-200' 
       : 'text-neutral-800',
@@ -58,12 +58,12 @@ export function TipoMovimiento({
       ? 'text-neutral-300' 
       : 'text-neutral-700',
     
-    // Inputs invertidos
+    //* Inputs invertidos
     input: theme === 'dark' 
       ? 'bg-neutral-900/70 border border-neutral-800 text-white placeholder:text-neutral-500 focus:border-purple-500 focus:ring-1 focus:ring-purple-500' 
       : 'bg-neutral-50 border border-neutral-300 text-black placeholder:text-neutral-500 focus:border-purple-600 focus:ring-1 focus:ring-purple-600',
     
-    // Botones invertidos
+    //* Botones invertidos
     button: theme === 'dark' 
       ? 'bg-purple-600 text-white hover:bg-purple-700 active:bg-purple-800' 
       : 'bg-purple-600 text-white hover:bg-purple-700 active:bg-purple-800',
@@ -72,7 +72,7 @@ export function TipoMovimiento({
       ? 'bg-neutral-800 text-neutral-300 border border-neutral-700 hover:bg-neutral-700 hover:text-neutral-200' 
       : 'bg-neutral-100 text-neutral-700 border border-neutral-300 hover:bg-neutral-200 hover:text-neutral-800',
     
-    // Tarjetas de movimiento invertidas
+    //* Tarjetas de movimiento invertidas
     movimientoActive: theme === 'dark'
       ? 'bg-purple-950/50 border border-purple-700 text-purple-300'
       : 'bg-purple-50 border border-purple-300 text-purple-700',
@@ -89,7 +89,7 @@ export function TipoMovimiento({
       ? 'text-neutral-500'
       : 'text-neutral-500',
     
-    // Tarjeta naranja invertida
+    //* Tarjeta naranja invertida
     statCardOrange: theme === 'dark'
       ? 'bg-gradient-to-br from-orange-950/30 to-orange-900/10 border border-orange-800/30'
       : 'bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200',

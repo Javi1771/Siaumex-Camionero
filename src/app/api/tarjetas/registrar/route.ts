@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       comprobante,
     } = body;
 
-    // Validaciones
+    //* Validaciones
     if (!tipoTarjetaId || !clienteId || !saldo || !comprobante) {
       return NextResponse.json(
         { success: false, error: 'Todos los campos son requeridos' },
@@ -23,20 +23,20 @@ export async function POST(request: NextRequest) {
 
     const pool = await getConnection();
 
-    // Obtener el siguiente ID
+    //* Obtener el siguiente ID
     const maxIdResult = await pool.request().query(`
       SELECT ISNULL(MAX(Id), 0) + 1 AS NextId FROM [Tarjetas]
     `);
     const nextId = maxIdResult.recordset[0].NextId;
 
-    // Generar nombre del documento
+    //* Generar nombre del documento
     const now = new Date();
     const documentoNombre = `${comprobante}_${now.toISOString().replace(/[:.]/g, '-')}`;
 
-    // Fecha de creación
+    //* Fecha de creación
     const fechaCreacion = now.toISOString();
 
-    // Insertar tarjeta
+    //* Insertar tarjeta
     await pool
       .request()
       .input('Id', nextId)

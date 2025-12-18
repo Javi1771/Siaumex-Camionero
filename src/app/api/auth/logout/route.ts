@@ -6,7 +6,7 @@ export async function POST() {
     { status: 200 }
   );
 
-  // Eliminar cookie de autenticación
+  //! Eliminar cookie de autenticación
   response.cookies.set('auth-token', '', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',

@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       clienteId,
     } = body;
 
-    // Validaciones
+    //* Validaciones
     if (!tarjetaId || !saldoAExtraer || !clienteId) {
       return NextResponse.json(
         { success: false, error: 'Todos los campos son requeridos' },
@@ -21,13 +21,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Obtener userId de las cookies - AWAIT aquí
+    //* Obtener userId de las cookies - AWAIT 
     const cookieStore = await cookies();
     const userId = cookieStore.get('user-id')?.value || 'SYSTEM';
 
     const pool = await getConnection();
 
-    // Obtener el último saldo de la tarjeta
+    //* Obtener el último saldo de la tarjeta
     const ultimoMovimiento = await pool
       .request()
       .input('tarjetaId', tarjetaId)
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
         ORDER BY Fecha DESC
       `);
 
-    // Si no hay movimientos previos, obtener saldo inicial de la tarjeta
+    //! Si no hay movimientos previos, obtener saldo inicial de la tarjeta
     let saldoInicial = 0;
     if (ultimoMovimiento.recordset.length > 0) {
       saldoInicial = ultimoMovimiento.recordset[0].SaldoFinal;
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
       saldoInicial = tarjeta.recordset[0]?.Saldo || 0;
     }
 
-    // Validar que haya saldo suficiente
+    //* Validar que haya saldo suficiente
     if (saldoAExtraer > saldoInicial) {
       return NextResponse.json(
         { success: false, error: 'Saldo insuficiente' },
@@ -62,22 +62,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Calcular valores
+    //* Calcular valores
     const saldoConsumido = saldoAExtraer;
     const saldoFinal = saldoInicial - saldoConsumido;
     const importeTotal = saldoConsumido * precioKG;
     const maximoEquivalente = saldoFinal * precioKG;
 
-    // Obtener el siguiente Folio
+    //* Obtener el siguiente Folio
     const maxFolioResult = await pool.request().query(`
       SELECT ISNULL(MAX(Folio), 0) + 1 AS NextFolio FROM [TarjetaMovimientos]
     `);
     const nextFolio = maxFolioResult.recordset[0].NextFolio;
 
-    // Fecha actual
+    //* Fecha actual
     const fechaActual = new Date().toISOString();
 
-    // Insertar movimiento
+    //* Insertar movimiento
     await pool
       .request()
       .input('Folio', nextFolio)
@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
         )
       `);
 
-    // Actualizar saldo en la tabla Tarjetas
+    //* Actualizar saldo en la tabla Tarjetas
     await pool
       .request()
       .input('tarjetaId', tarjetaId)

@@ -1,5 +1,3 @@
-// src/app/%28auth%29/layout.tsx
-
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {

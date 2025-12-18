@@ -22,7 +22,7 @@ export default function TarjetasPage() {
 
   const [activeTab, setActiveTab] = useState<'registrar' | 'tipos' | 'emitidas'>('registrar');
   
-  // Estados del formulario
+  //* Estados del formulario
   const [tiposTarjetas, setTiposTarjetas] = useState<TipoTarjeta[]>([]);
   
   const [formData, setFormData] = useState({
@@ -121,19 +121,19 @@ export default function TarjetasPage() {
 
   const currentStyles = styles[theme];
 
-  // Cargar tipos de tarjetas
+  //* Cargar tipos de tarjetas
   useEffect(() => {
     fetchTiposTarjetas();
   }, []);
 
-  // Cargar historial cuando se selecciona un cliente
+  //* Cargar historial cuando se selecciona un cliente
   useEffect(() => {
     if (formData.clienteId) {
       fetchHistorial(formData.clienteId);
     }
   }, [formData.clienteId, filtroFechaDesde, filtroFechaHasta]);
 
-  // Calcular importe total
+  //* Calcular importe total
   useEffect(() => {
     const importe = formData.saldo * formData.precioKG;
     setFormData(prev => ({ ...prev, importeTotal: importe }));
@@ -226,7 +226,7 @@ export default function TarjetasPage() {
             : 'Saldo extraído correctamente'
         );
         
-        // Limpiar formulario
+        //! Limpiar formulario
         setFormData({
           tipoTarjetaId: 0,
           precioKG: 0,

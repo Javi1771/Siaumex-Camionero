@@ -53,7 +53,7 @@ export default function LoginPage() {
     }
   };
 
-  // Estilos específicos para este componente
+  //? Estilos específicos para este componente
   const styles = {
     light: {
       container: 'min-h-screen bg-white flex items-center justify-center p-6 relative',
