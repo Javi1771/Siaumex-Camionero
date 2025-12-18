@@ -7,7 +7,7 @@ const SECRET_KEY = new TextEncoder().encode(
 
 const EXPIRATION_TIME = process.env.JWT_EXPIRES_IN || '7d';
 
-/**
+/*
  * Genera un token JWT
  */
 export async function generateToken(payload: JWTPayload): Promise<string> {
@@ -29,7 +29,7 @@ export async function generateToken(payload: JWTPayload): Promise<string> {
   }
 }
 
-/**
+/*
  * Verifica y decodifica un token JWT
  */
 export async function verifyToken(token: string): Promise<JWTPayload | null> {
@@ -48,7 +48,7 @@ export async function verifyToken(token: string): Promise<JWTPayload | null> {
   }
 }
 
-/**
+/*
  * Extrae el token de las cookies
  */
 export function getTokenFromCookies(cookies: string): string | null {

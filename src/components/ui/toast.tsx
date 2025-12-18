@@ -26,7 +26,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     const id = Math.random().toString(36).substring(7);
     setToasts((prev) => [...prev, { id, type, message }]);
 
-    // Auto-remove after 5 seconds
+    //! Auto remove después de 5 segundos
     setTimeout(() => {
       setToasts((prev) => prev.filter((toast) => toast.id !== id));
     }, 5000);
@@ -149,7 +149,7 @@ export function useToast() {
   return context;
 }
 
-// Helper hooks para uso más fácil
+//* Helper hooks para uso más fácil
 export function useToastHelpers() {
   const { showToast } = useToast();
 
